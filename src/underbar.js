@@ -38,7 +38,12 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-  	return n === undefined ? array[array.length -1] : array.slice(0, n);
+    var spliceIndex = 0;
+    if(n < array.length){
+      spliceIndex = array.length-n
+    }
+
+  	return n === undefined ? array[array.length -1] : array.slice(spliceIndex, array.length);
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -47,7 +52,14 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
-  	
+
+    console.log("iterator: " + iterator.toString())
+    // console.log(collection)
+    for (var i=0; i < collection.length; i++){
+      // console.log( i + ": " + collection[i])
+      iterator(collection[i], i)
+    }
+
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -294,6 +306,10 @@
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+  		//get passed in values
+  		var args = arguments
+
+  		//idk
   };
 
   // Take the difference between one array and a number of other arrays.
