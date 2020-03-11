@@ -53,12 +53,27 @@
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
 
-    console.log("iterator: " + iterator.toString())
-    // console.log(collection)
-    for (var i=0; i < collection.length; i++){
-      // console.log( i + ": " + collection[i])
-      iterator(collection[i], i)
+    if(Array.isArray(collection)){
+       for (var i=0; i < collection.length; i++){
+        iterator(collection[i], i, collection)
+      }
+    } else {
+      for (var key in collection){
+        console.log(key)
+        iterator(collection[key], key, collection)
+      }
     }
+
+    console.log("iterator: " + iterator.toString())
+    console.log("colletion: " + collection.toString())
+    // // console.log(collection)
+    // for (var i=0; i < collection.length; i++){
+    //   // console.log( i + ": " + collection[i])
+    //     iterator(collection[i], i, collection)
+    // }
+
+    //I over-complicated this one, the directions are straightforward but: the iterator() signature confused me, not sure why we are passing collection to it...
+      //I guess its a transform method?
 
   };
 
