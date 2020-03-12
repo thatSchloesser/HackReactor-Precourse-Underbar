@@ -123,6 +123,26 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    //why do I need the last two paramters?
+    // console.log(array, isSorted, iterator)
+
+    var ans = []
+    if(isSorted){
+
+      ///NOTE: this not working for provided edge case
+      for (var i=0; i<array.length; i++){
+        if (iterator(array[i]) && !ans.includes(array[i])){
+          ans.push(array[i])
+        }
+      }
+    } else {
+      for (var i=0; i<array.length; i++){
+        if (!ans.includes(array[i])){
+          ans.push(array[i])
+        }
+      }
+    }
+    return ans; 
   };
 
 
