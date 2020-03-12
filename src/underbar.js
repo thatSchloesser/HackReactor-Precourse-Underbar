@@ -105,7 +105,20 @@
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
 
-    
+      //not sure how to do this tip in LESS lines of code
+      //tried Array.filter() brielfy but not sure if that was a good idea.
+      //came up with this, but am not a fan:
+
+      var ans = []
+      var inverse = _.filter(collection, test)
+      for (var i=0; i < collection.length; i++){
+        if(!inverse.includes(collection[i])){
+          ans.push(collection[i])
+        }
+      }
+      //... bc I'm pretty sure this is less efficient than just copying _filter and adding "!"...
+
+    return ans
   };
 
   // Produce a duplicate-free version of the array.
