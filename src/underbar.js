@@ -77,7 +77,7 @@
     // it uses the iteration helper `each`, which you will need to write.
     var result = -1;
 
-    _.each(array, function(item, index) {
+    _.each(array, function(item, index) { //??
       if (item === target && result === -1) {
         result = index;
       }
@@ -123,19 +123,21 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
-    //why do I need the last two paramters?
+    //WHY do I need the last two paramters?
     // console.log(array, isSorted, iterator)
 
     var ans = []
     if(isSorted){
 
-      ///NOTE: this not working for provided edge case
+      ///NOTE: this not working for provided edge case. 
+      //Not sure if test is correct, since I think I am iterating on the array correctly. 
       for (var i=0; i<array.length; i++){
         if (iterator(array[i]) && !ans.includes(array[i])){
           ans.push(array[i])
         }
       }
     } else {
+    	//working
       for (var i=0; i<array.length; i++){
         if (!ans.includes(array[i])){
           ans.push(array[i])
@@ -151,6 +153,11 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var ans = []
+    for (var i=0; i< collection.length; i++){
+    	ans.push(iterator(collection[i]))
+    }
+    return ans
   };
 
   /*
@@ -159,7 +166,7 @@
    * as an example of this.
    */
 
-  // Takes an array of objects and returns and array of the values of
+  // Takes an array of objects and returns an array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
   _.pluck = function(collection, key) {
@@ -192,6 +199,28 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+
+  		console.log(collection, " it: ", iterator, "acc: ",accumulator)
+
+  		if(!(accumulator !== undefined)){
+
+  			accumulator = collection[0]
+	  		for (var i =1; i< collection.length; i++){
+				accumulator = iterator(accumulator, collection[i])
+			}
+			return accumulator 			
+  		} else {
+	  		if(collection.length > 1){
+		  		for (var i =0; i< collection.length; i++){
+					accumulator = iterator(accumulator, collection[i])
+				}
+				return accumulator
+
+	  		} else return collection[0]
+	  	}
+
+	  	//one test is not passing, not sure why. 
+	  		//"memo" isn't in the method description and I AM passing it in as described...
   };
 
 
