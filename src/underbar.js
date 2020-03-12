@@ -53,26 +53,18 @@
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
 
+    // console.log("iterator: " + iterator.toString())
+    // console.log("colletion: " + collection.toString())
     if(Array.isArray(collection)){
        for (var i=0; i < collection.length; i++){
         iterator(collection[i], i, collection)
       }
     } else {
       for (var key in collection){
-        console.log(key)
         iterator(collection[key], key, collection)
       }
     }
-
-    console.log("iterator: " + iterator.toString())
-    console.log("colletion: " + collection.toString())
-    // // console.log(collection)
-    // for (var i=0; i < collection.length; i++){
-    //   // console.log( i + ": " + collection[i])
-    //     iterator(collection[i], i, collection)
-    // }
-
-    //I over-complicated this one, the directions are straightforward but: the iterator() signature confused me, not sure why we are passing collection to it...
+    //I over-complicated this one, the directions are straightforward but: the iterator() signature confused me, not sure what the purpose of passing collection to it is...
       //I guess its a transform method?
 
   };
@@ -96,12 +88,24 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    
+    //console.log("test: " + test)
+   
+    var ans = []
+    for (var i=0; i < collection.length; i++){
+      if(test(collection[i])){
+        ans.push(collection[i])
+      }
+    }
+    return ans;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+
+    
   };
 
   // Produce a duplicate-free version of the array.
