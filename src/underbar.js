@@ -202,21 +202,23 @@
 
   		console.log(collection, " it: ", iterator, "acc: ",accumulator)
 
-  		if(!(accumulator !== undefined)){
+
+  		if(accumulator === undefined){
 
   			accumulator = collection[0]
 	  		for (var i =1; i< collection.length; i++){
 				accumulator = iterator(accumulator, collection[i])
 			}
 			return accumulator 			
-  		} else {
-	  		if(collection.length > 1){
-		  		for (var i =0; i< collection.length; i++){
-					accumulator = iterator(accumulator, collection[i])
-				}
-				return accumulator
+  		} 
+  		//accumultaor is defined
+  		else {
 
-	  		} else return collection[0]
+	  		for (var i =0; i< collection.length; i++){
+				accumulator = iterator(accumulator, collection[i])
+			}
+			return accumulator
+
 	  	}
 
 	  	//one test is not passing, not sure why. 
