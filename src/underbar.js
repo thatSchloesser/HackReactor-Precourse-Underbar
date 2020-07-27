@@ -124,27 +124,47 @@
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
     //WHY do I need the last two paramters?
-    // console.log(array, isSorted, iterator)
+    	//=> look at https://underscorejs.org/
+
+    // ... I'm still not sure how to use the iterator function
 
     var ans = []
-    if(isSorted){
+    // if(isSorted){
 
-      ///NOTE: this not working for provided edge case. 
-      //Not sure if test is correct, since I think I am iterating on the array correctly. 
-      for (var i=0; i<array.length; i++){
-        if (iterator(array[i]) && !ans.includes(array[i])){
-          ans.push(array[i])
-        }
-      }
+    		//insert faster algorithm here without the !includes function call 
+
+    		//push in first element
+
+    		//loop through items
+
+    		//just check previous item in array
+
+    		//not implimenting rn because TECHNICALLY don't need to to get the correct answer... 
+    // } 
+
+    if(iterator !== undefined){
+    	//store returned iterator values
+    	var track = []
+
+  		//call iterator function on each element and check uniqueness
+    	for (var i=0; i<array.length; i++){
+
+			var transform = iterator(array[i])		
+			if (!track.includes(transform)){
+			  track.push(transform)
+			  //store the unique value of that array
+			  ans.push(array[i])
+			}
+		}
     } else {
-    	//working
-      for (var i=0; i<array.length; i++){
-        if (!ans.includes(array[i])){
-          ans.push(array[i])
-        }
-      }
-    }
-    return ans; 
+    	//literally just save the value if it doesn't alreay exist in the array
+		for (var i=0; i<array.length; i++){
+			if (!ans.includes(array[i])){
+			  ans.push(array[i])
+			}
+		}
+	}
+	return ans; 
   };
 
 
@@ -200,29 +220,25 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
 
-  		console.log(collection, " it: ", iterator, "acc: ",accumulator)
-
+  		//NOTE: I'm assuming collection[0] is defined. Error not handled
 
   		if(accumulator === undefined){
 
+        //initialize accumulator since it is undefined
   			accumulator = collection[0]
+        //iterate & accumulate.
 	  		for (var i =1; i< collection.length; i++){
-				accumulator = iterator(accumulator, collection[i])
-			}
-			return accumulator 			
+  				accumulator = iterator(accumulator, collection[i])
+  			}
   		} 
-  		//accumultaor is defined
+  		//accumultaor is defined, same as above without intializing
   		else {
 
 	  		for (var i =0; i< collection.length; i++){
-				accumulator = iterator(accumulator, collection[i])
-			}
-			return accumulator
-
+  				accumulator = iterator(accumulator, collection[i])
+  			}
 	  	}
-
-	  	//one test is not passing, not sure why. 
-	  		//"memo" isn't in the method description and I AM passing it in as described...
+	  	return accumulator
   };
 
 
@@ -244,17 +260,55 @@
       return item === target;
     }, false);
   };
-
+  //my reduce has no erros, but this does, idk.
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    
+
+    for(let i=0; i< collection.length; i++){
+      //check undefined
+      if(iterator === undefined){
+        if(!collection[i]){
+          return false;
+        }
+      }
+      //call iterator
+      else {
+        if(!iterator(collection[i])){
+          return false
+        }        
+      }
+    }
+
+    //no false values
+    return true
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+      //?
+
+    for(let i=0; i< collection.length; i++){
+      //check undefined
+      if(iterator === undefined){
+        if(collection[i]){
+          return true;
+        }
+      }
+      //call iterator
+      else {
+        if(iterator(collection[i])){
+          return true
+        }        
+      }
+    }
+
+    //no false values
+    return false
   };
 
 
@@ -277,11 +331,30 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    // console.log(arguments)
+
+    //loop through passed in arguments (there could be many)
+    for(let i =1; i<arguments.length; i++){
+      //loop through keys and add them and their values to main object
+      for(let key in arguments[i]){
+        obj[key] = arguments[i][key]
+      }
+    }
+    return obj
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    for(let i =1; i<arguments.length; i++){
+      //loop through keys and add them and their values to main object
+      for(let key in arguments[i]){
+        if(obj[key]===undefined){
+          obj[key] = arguments[i][key]
+        }
+      }
+    }
+    return obj
   };
 
 
@@ -309,12 +382,20 @@
         // TIP: .apply(this, arguments) is the standard way to pass on all of the
         // infromation from one function call to another.
         result = func.apply(this, arguments);
+
+
         alreadyCalled = true;
       }
       // The new function always returns the originally computed result.
       return result;
     };
   };
+
+  /*********************************
+  *
+  *  research closure scope
+  *
+  ******************************/
 
   // Memorize an expensive function's results by storing them. You may assume
   // that the function only takes primitives as arguments.
@@ -325,7 +406,53 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-  };
+    //console.log(func)
+
+    //1)check if func is already stored
+    //2)store the func & func arguments if not
+    //3) retrieve result if so
+    //4) return result
+
+      //data? 
+      /*results {
+        func: [{arguments:result},...]}
+        //
+      }*/
+      //values: 
+    var values = {};
+    var result;
+
+      return function() {
+          
+          //how i solved this
+          //console.log(arguments)
+
+          var args = JSON.stringify(arguments)
+
+          //check if func is stored
+          if(values[func] === undefined){
+
+            result = func.apply(this, arguments);
+            values[func] = {}   //create array before setting value
+            values[func][args] = result   
+          }
+           else {
+            //check if arguments are stored
+            if(values[func][args] === undefined){
+              result = func.apply(this, arguments);
+              values[func][args]= result
+            } 
+            //return stored result
+            else{
+              result = values[func][args]
+            }
+          }
+      
+        // The new function always returns the originally computed result.
+        return result;
+      };
+
+  };  //=> well this took awhile for no reason.
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -334,6 +461,23 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+
+    //no extra args
+    if(arguments.length < 3){
+          setTimeout(func, wait);
+    }
+    //extra args
+    else{
+      //build arguments object from extra args -> the tricky but still easy part
+      var args = []
+      for (let i=2; i<arguments.length;i++){
+        args.push(arguments[i])
+      }
+
+      //SELF NOTE: you need .apply so you can pass the arguments instead of passing a single array
+      setTimeout(func.apply(this,args), wait); 
+    }
+
   };
 
 
@@ -348,7 +492,17 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+
+    let arr = array.slice(0)
+
+    for (let i = arr.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   };
+
+//* end required here *
 
 
   /**
